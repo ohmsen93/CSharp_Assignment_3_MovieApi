@@ -30,4 +30,5 @@ public class Character
     public string Picture { get; set; }
 
     public ICollection<Movie> Movies { get; set; }
+
 }
