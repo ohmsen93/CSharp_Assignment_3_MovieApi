@@ -29,11 +29,13 @@ namespace CSharp_Assignment_3_MovieApi.DatabaseContext
         //Database Relationships & initialization
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            // Relationship between movie and franchise its one franchise to many movies
             modelBuilder.Entity<Movie>()
                 .HasOne<Franchise>(m => m.Franchise)
                 .WithMany(f => f.Movies)
                 .HasForeignKey(m => m.FranchiseId);
 
+            // Relationship between movie and character, as this is a many to many relationship, we generate a new table called Movie_Character, and seed it with info
             modelBuilder.Entity<Movie>()
                 .HasMany(m => m.Characters)
                 .WithMany(c => c.Movies)
