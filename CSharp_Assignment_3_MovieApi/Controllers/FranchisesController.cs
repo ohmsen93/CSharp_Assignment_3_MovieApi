@@ -8,10 +8,14 @@ using Microsoft.EntityFrameworkCore;
 using CSharp_Assignment_3_MovieApi.DatabaseContext;
 using CSharp_Assignment_3_MovieApi.Models;
 using System.Reflection;
+using System.Net.Mime;
 
 namespace CSharp_Assignment_3_MovieApi.Controllers
 {
     [Route("api/[controller]")]
+    [ApiConventionType(typeof(DefaultApiConventions))]
+    [Produces(MediaTypeNames.Application.Json)]
+    [Consumes(MediaTypeNames.Application.Json)]
     [ApiController]
     public class FranchisesController : ControllerBase
     {
@@ -24,11 +28,15 @@ namespace CSharp_Assignment_3_MovieApi.Controllers
             _context = context;
         }
 
-        // GET: api/Franchises
+        
+        /// <summary>
+        /// GET: all Franchises
+        /// </summary>
+        /// <returns>List of Franchises</returns>
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Franchise>>> GetFranchises()
         {
-            return await _context.Franchises.ToListAsync();
+            return Ok(await _context.Franchises.ToListAsync());
         }
 
         // GET: api/Franchises/5
