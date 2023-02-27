@@ -8,8 +8,10 @@ namespace CSharp_Assignment_3_MovieApi.Profiles
     {
         public FranchiseProfile() 
         {
-            //CreateMap<Franchise, FranchiseDto>()
-            //    .ForMember(dto => dto.Movies,)
+            CreateMap<CreateFranchiseDto, Franchise>();
+            CreateMap<Franchise, FranchiseDto>()
+                .ForMember(dto => dto.Movies, options =>
+                options.MapFrom(movieDomain => movieDomain.Movies.Select(movie => $"api/v1/movies/{movie.Id}").ToList()));
         }
     }
 }

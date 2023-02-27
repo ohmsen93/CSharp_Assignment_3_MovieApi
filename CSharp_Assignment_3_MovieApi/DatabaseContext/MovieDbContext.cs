@@ -12,7 +12,7 @@ namespace CSharp_Assignment_3_MovieApi.DatabaseContext
         {
             _config = config;
         }
-
+        
         //Tables
         public DbSet<Movie> Movies { get; set; }
         public DbSet<Franchise> Franchises { get; set;}

@@ -9,118 +9,91 @@ using CSharp_Assignment_3_MovieApi.DatabaseContext;
 using CSharp_Assignment_3_MovieApi.Models;
 using System.Reflection;
 using System.Net.Mime;
+using CSharp_Assignment_3_MovieApi.Services;
+using CSharp_Assignment_3_MovieApi.Models.Dto;
+using AutoMapper;
 
 namespace CSharp_Assignment_3_MovieApi.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/v1[controller]")]
     [ApiConventionType(typeof(DefaultApiConventions))]
     [Produces(MediaTypeNames.Application.Json)]
     [Consumes(MediaTypeNames.Application.Json)]
     [ApiController]
     public class FranchisesController : ControllerBase
     {
-        private readonly MovieDbContext _context;
+        //private readonly MovieDbContext _context;
+        private readonly IFranchiseService _franchiseService;
+        private readonly IMapper _mapper;
 
-          
-        
-        public FranchisesController(MovieDbContext context)
+        //public FranchisesController(MovieDbContext context)
+        //{
+        //    _context = context;
+        //}
+        public FranchisesController(IFranchiseService service, IMapper mapper)
         {
-            _context = context;
+            _franchiseService = service;
+            _mapper = mapper;
         }
 
-        
         /// <summary>
         /// GET: all Franchises
         /// </summary>
-        /// <returns>List of Franchises</returns>
+        /// <returns>a List of Franchises</returns>
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Franchise>>> GetFranchises()
+        public async Task<ActionResult<IEnumerable<FranchiseDto>>> GetAllFranchises()
         {
-            return Ok(await _context.Franchises.ToListAsync());
+            var franchises = await _franchiseService.GetAllFranchises();
+            var franchiseDto = _mapper.Map<IEnumerable<FranchiseDto>>(franchises);
+            return Ok(franchiseDto);
         }
-
-        // GET: api/Franchises/5
+        /// <summary>
+        /// GET: Franchise by Id
+        /// </summary>
+        /// <param name="id">id for the Franchise you want</param>
+        /// <returns>The requested franchise</returns>
         [HttpGet("{id}")]
-        public async Task<ActionResult<Franchise>> GetFranchise(int id)
+        public async Task<ActionResult<IEnumerable<FranchiseDto>>> GetFranchiseById(int id)
         {
-            var franchise = await _context.Franchises.FindAsync(id);
-
+            var franchise = await _franchiseService.GetFranchiseById(id);
             if (franchise == null)
             {
                 return NotFound();
             }
-
-            return franchise;
+            var franchiseDto = _mapper.Map<FranchiseDto>(franchise);
+            return Ok(franchiseDto);
         }
 
-        // PUT: api/Franchises/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        
         /// <summary>
-        /// Updates a FranchiseItem
+        /// creates a new Franchise resource
         /// </summary>
-        /// <param name="id"></param>
-        /// <param name="franchise"></param>
-        /// <returns></returns>
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutFranchise(int id, Franchise franchise)
+        /// <param name="createFranchiseDto">DTO with the data for the new Franchise to be created</param>
+        /// <returns>201 Created response with the new Franchise data</returns>
+        [HttpPost]
+        public async Task<ActionResult<FranchiseDto>> PostFranchise(CreateFranchiseDto createFranchiseDto)
         {
-            if (id != franchise.Id)
-            {
-                return BadRequest();
-            }
-
-            _context.Entry(franchise).State = EntityState.Modified;
-
+            var franchise = _mapper.Map<Franchise>(createFranchiseDto);
+            await _franchiseService.PostFranchise(franchise);
+            return CreatedAtAction(nameof(GetFranchiseById), new { id = franchise.Id }, franchise);
+        }
+        /// <summary>
+        /// deletes a Franchise resource by ID.
+        /// </summary>
+        /// <param name="id">The ID of the Franchise to be deleted</param>
+        /// <returns>The deleted Franchise object</returns>
+        [HttpDelete("{id}")]
+        public async Task<ActionResult<FranchiseDto>> DeleteFranchise(int id)
+        {
             try
             {
-                await _context.SaveChangesAsync();
+                var franchise = await _franchiseService.GetFranchiseById(id);
+                await _franchiseService.DeleteFranchise(id);
+                return Ok(_mapper.Map<FranchiseDto>(franchise));
             }
-            catch (DbUpdateConcurrencyException)
+            catch (Exception ex)
             {
-                if (!FranchiseExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
+                return NotFound(ex.Message);
             }
-
-            return NoContent();
-        }
-
-        // POST: api/Franchises
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPost]
-        public async Task<ActionResult<Franchise>> PostFranchise(Franchise franchise)
-        {
-            _context.Franchises.Add(franchise);
-            await _context.SaveChangesAsync();
-
-            return CreatedAtAction("GetFranchise", new { id = franchise.Id }, franchise);
-        }
-
-        // DELETE: api/Franchises/5
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteFranchise(int id)
-        {
-            var franchise = await _context.Franchises.FindAsync(id);
-            if (franchise == null)
-            {
-                return NotFound();
-            }
-
-            _context.Franchises.Remove(franchise);
-            await _context.SaveChangesAsync();
-
-            return NoContent();
-        }
-
-        private bool FranchiseExists(int id)
-        {
-            return _context.Franchises.Any(e => e.Id == id);
         }
     }
 }

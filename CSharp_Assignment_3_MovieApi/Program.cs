@@ -1,4 +1,7 @@
 using CSharp_Assignment_3_MovieApi.DatabaseContext;
+using CSharp_Assignment_3_MovieApi.Services;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 using System.Linq.Expressions;
 using System.Reflection;
@@ -6,9 +9,11 @@ using System.Reflection;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+
+builder.Services.AddTransient<IFranchiseService, FranchiseService>();
 builder.Services.AddControllers();
 builder.Services.AddDbContext<MovieDbContext>();
-builder.Services.AddControllers();
+builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -21,12 +26,12 @@ builder.Services.AddSwaggerGen(options =>
     options.SwaggerDoc("v1", new Microsoft.OpenApi.Models.OpenApiInfo
     {
         Version = "v1",
-        Title = "(yet another) Movie API",
-        Description = "yet another movie api",
+        Title = "Movie API",
+        Description = "Movie api for a C# Assignment",
         Contact = new OpenApiContact
         {
-            Name = "Thomas",
-            Url = new Uri("https://github.com/thomas")
+            Name = "Mads Ohmsen, Thomas Osterhammel",
+            Url = new Uri("https://github.com/ohmsen93/CSharp_Assignment_3_MovieApi")
         },
         License = new OpenApiLicense
         {
@@ -34,8 +39,9 @@ builder.Services.AddSwaggerGen(options =>
             Url = new Uri("https://opensource.org/license/mit/")
         }
     });
-    //options.add
+    options.IncludeXmlComments(xmlPath);
 });
+
 
 var app = builder.Build();
 
@@ -51,8 +57,8 @@ if (app.Environment.IsDevelopment())
 using var scope = app.Services.CreateScope();
 var services = scope.ServiceProvider;
 var dbContext = services.GetRequiredService<MovieDbContext>();
-dbContext.Database.EnsureCreated(); //
-
+//dbContext.Database.EnsureCreated(); 
+dbContext.Database.Migrate();
 
 app.UseHttpsRedirection();
 
