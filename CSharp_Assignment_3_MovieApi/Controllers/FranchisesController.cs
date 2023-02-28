@@ -95,5 +95,24 @@ namespace CSharp_Assignment_3_MovieApi.Controllers
                 return NotFound(ex.Message);
             }
         }
+
+        [HttpPatch]
+        public async Task<ActionResult<FranchiseDto>> PatchFranchise(int id, FranchiseDto franchiseDto)
+        {
+            var franchise = _mapper.Map<Franchise>(franchiseDto);
+            franchise.Id = id;
+            try
+            {
+                franchise = await _franchiseService.PatchFranchise(franchise);
+            }
+            catch (Exception ex)
+            {
+                return NotFound(ex.Message);
+            }
+
+            var updatedFranchise = _mapper.Map<FranchiseDto>(franchise);
+
+            return Ok(updatedFranchise);
+        }
     }
 }
