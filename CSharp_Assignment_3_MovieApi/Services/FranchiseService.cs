@@ -65,5 +65,21 @@ namespace CSharp_Assignment_3_MovieApi.Services
             await _dbContext.SaveChangesAsync();
             return updatedFranchise;
         }
+
+        public async Task<Franchise> PatchFranchiseMovies(Franchise franchise)
+        {
+            //find Franchise entity
+            var updatedFranchise = await _dbContext.Franchises.FindAsync(franchise.Id);
+            if (updatedFranchise == null)
+            {
+                throw new Exception($"Franchise with Id: {franchise.Id} not found.");
+            }
+
+            //patch franchise entity
+
+            updatedFranchise.Movies = franchise.Movies;
+            await _dbContext.SaveChangesAsync();
+            return updatedFranchise;
+        }
     }
 }

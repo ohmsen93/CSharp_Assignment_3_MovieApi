@@ -11,7 +11,6 @@ using System.Reflection;
 using System.Net.Mime;
 using CSharp_Assignment_3_MovieApi.Services;
 using AutoMapper;
-using CSharp_Assignment_3_MovieApi.Models.Dto.Movie;
 
 namespace CSharp_Assignment_3_MovieApi.Controllers
 {

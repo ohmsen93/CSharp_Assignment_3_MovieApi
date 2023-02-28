@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 using CSharp_Assignment_3_MovieApi.Models;
-using CSharp_Assignment_3_MovieApi.Models.Dto;
 
 namespace CSharp_Assignment_3_MovieApi.Profiles
 {

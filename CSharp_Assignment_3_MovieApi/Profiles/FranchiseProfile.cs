@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 using CSharp_Assignment_3_MovieApi.Models;
-using CSharp_Assignment_3_MovieApi.Models.Dto;
 
 namespace CSharp_Assignment_3_MovieApi.Profiles
 {
@@ -11,7 +10,7 @@ namespace CSharp_Assignment_3_MovieApi.Profiles
             CreateMap<CreateFranchiseDto, Franchise>();
             CreateMap<Franchise, FranchiseDto>()
                 .ForMember(dto => dto.Movies, options =>
-                options.MapFrom(movieDomain => movieDomain.Movies.Select(movie => $"api/v1/movies/{movie.Id}").ToList()));
+                options.MapFrom(movieDomain => movieDomain.Movies.Select(movie => $"{movie.Id}").ToList()));
             // Add the missing mapping configuration between FranchiseDto and Franchise
             CreateMap<FranchiseDto, Franchise>()
                 .ForMember(franchise => franchise.Id, options => options.Ignore());

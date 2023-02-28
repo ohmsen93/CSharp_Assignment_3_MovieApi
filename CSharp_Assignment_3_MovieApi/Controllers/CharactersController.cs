@@ -10,7 +10,6 @@ using CSharp_Assignment_3_MovieApi.Models;
 using System.Reflection;
 using System.Net.Mime;
 using CSharp_Assignment_3_MovieApi.Services;
-using CSharp_Assignment_3_MovieApi.Models.Dto;
 using AutoMapper;
 
 namespace CSharp_Assignment_3_MovieApi.Controllers
