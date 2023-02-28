@@ -22,17 +22,11 @@ namespace CSharp_Assignment_3_MovieApi.Controllers
     [ApiController]
     public class CharactersController : ControllerBase
     {
-        private readonly MovieDbContext _context;
         private readonly ICharacterService _CharacterService;
         private readonly IMapper _mapper;
 
-        //public CharactersController(MovieDbContext context)
-        //{
-        //    _context = context;
-        //}
-        public CharactersController(MovieDbContext context, ICharacterService service, IMapper mapper)
+        public CharactersController(ICharacterService service, IMapper mapper)
         {
-            _context = context;
             _CharacterService = service;
             _mapper = mapper;
         }

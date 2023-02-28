@@ -1,4 +1,4 @@
-﻿namespace CSharp_Assignment_3_MovieApi.Models.Dto
+﻿namespace CSharp_Assignment_3_MovieApi.Models.Dto.Movie
 {
     public class MovieEditDto
     {

@@ -22,17 +22,11 @@ namespace CSharp_Assignment_3_MovieApi.Controllers
     [ApiController]
     public class FranchisesController : ControllerBase
     {
-        private readonly MovieDbContext _context;
         private readonly IFranchiseService _franchiseService;
         private readonly IMapper _mapper;
 
-        //public FranchisesController(MovieDbContext context)
-        //{
-        //    _context = context;
-        //}
-        public FranchisesController(MovieDbContext context, IFranchiseService service, IMapper mapper)
+        public FranchisesController(IFranchiseService service, IMapper mapper)
         {
-            _context = context;
             _franchiseService = service;
             _mapper = mapper;
         }
