@@ -22,7 +22,7 @@ namespace CSharp_Assignment_3_MovieApi.Controllers
     [ApiController]
     public class FranchisesController : ControllerBase
     {
-        //private readonly MovieDbContext _context;
+        private readonly MovieDbContext _context;
         private readonly IFranchiseService _franchiseService;
         private readonly IMapper _mapper;
 
@@ -30,8 +30,9 @@ namespace CSharp_Assignment_3_MovieApi.Controllers
         //{
         //    _context = context;
         //}
-        public FranchisesController(IFranchiseService service, IMapper mapper)
+        public FranchisesController(MovieDbContext context, IFranchiseService service, IMapper mapper)
         {
+            _context = context;
             _franchiseService = service;
             _mapper = mapper;
         }
@@ -95,24 +96,34 @@ namespace CSharp_Assignment_3_MovieApi.Controllers
                 return NotFound(ex.Message);
             }
         }
-
-        [HttpPatch]
-        public async Task<ActionResult<FranchiseDto>> PatchFranchise(int id, FranchiseDto franchiseDto)
+        /// <summary>
+        /// Update franchise with given id to have the new data from the franchiseEditDto object
+        /// </summary>
+        /// <param name="id">the Id for the franchise you want updated</param>
+        /// <param name="franchiseEditDto">the dto object data you want the updated franchise to have</param>
+        /// <returns></returns>
+        [HttpPatch("{id}")]
+        public async Task<ActionResult<FranchiseDto>> PatchFranchise(int id, FranchiseEditDto franchiseEditDto)
         {
-            var franchise = _mapper.Map<Franchise>(franchiseDto);
-            franchise.Id = id;
+            var franchise = await _franchiseService.GetFranchiseById(id);
+
+            if (franchise == null)
+            {
+                return NotFound();
+            }
+            _mapper.Map(franchiseEditDto, franchise);
             try
             {
                 franchise = await _franchiseService.PatchFranchise(franchise);
             }
             catch (Exception ex)
             {
-                return NotFound(ex.Message);
+                return BadRequest(ex.Message);
             }
 
-            var updatedFranchise = _mapper.Map<FranchiseDto>(franchise);
+            var updatedFranchiseDto = _mapper.Map<FranchiseDto>(franchise);
 
-            return Ok(updatedFranchise);
+            return Ok(updatedFranchiseDto);
         }
     }
 }
