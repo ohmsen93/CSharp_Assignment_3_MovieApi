@@ -9,6 +9,7 @@ using System.Reflection;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+builder.Services.AddTransient<ICharacterService, CharacterService>();
 builder.Services.AddTransient<IFranchiseService, FranchiseService>();
 builder.Services.AddControllers();
 builder.Services.AddDbContext<MovieDbContext>();
