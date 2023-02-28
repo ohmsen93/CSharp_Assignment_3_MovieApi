@@ -1,6 +1,9 @@
-﻿namespace CSharp_Assignment_3_MovieApi.Models.Dto
+﻿using System.ComponentModel.DataAnnotations.Schema;
+using System.ComponentModel.DataAnnotations;
+
+namespace CSharp_Assignment_3_MovieApi.Models.Dto
 {
-    public class FranchiseEditDto
+    public class MovieDto
     {
         public int Id { get; set; }
         public string Title { get; set; }
@@ -11,5 +14,7 @@
         public string Trailer { get; set; }
         public int FranchiseId { get; set; }
         public string Franchise { get; set; }
+        public List<string> Characters { get; set; }
+
     }
 }

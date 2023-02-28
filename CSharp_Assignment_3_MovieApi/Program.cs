@@ -10,6 +10,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddTransient<IFranchiseService, FranchiseService>();
+builder.Services.AddTransient<IMovieService, MovieService>();
 builder.Services.AddControllers();
 builder.Services.AddDbContext<MovieDbContext>();
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
