@@ -17,6 +17,8 @@ namespace CSharp_Assignment_3_MovieApi.Profiles
             CreateMap<FranchiseEditDto, Franchise>()
                 .ForMember(dest => dest.Movies, options => options.Ignore())
                 .ForMember(dest => dest.Id, options => options.Ignore());
+            CreateMap<FranchiseEditMovieDto, Tuple<int, IEnumerable<int>>>()
+                .ConstructUsing(dto => new Tuple<int, IEnumerable<int>>(0, dto.MovieIds));
         }
     }
 }

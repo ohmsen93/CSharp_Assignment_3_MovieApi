@@ -22,12 +22,15 @@ namespace CSharp_Assignment_3_MovieApi.Controllers
     public class FranchisesController : ControllerBase
     {
         private readonly IFranchiseService _franchiseService;
+        private readonly IMovieService _movieService;
         private readonly IMapper _mapper;
 
-        public FranchisesController(IFranchiseService service, IMapper mapper)
+        public FranchisesController(IFranchiseService service, IMovieService movieService, IMapper mapper)
         {
             _franchiseService = service;
+            _movieService = movieService;
             _mapper = mapper;
+
         }
 
         /// <summary>
@@ -119,6 +122,48 @@ namespace CSharp_Assignment_3_MovieApi.Controllers
             return Ok(updatedFranchiseDto);
         }
 
+
+        /// <summary>
+        /// Update movies with a franchise id based of a list of ints supplied in the franchiseEditMovieDto object
+        /// </summary>
+        /// <param name="id">the Id for the franchise you want updated</param>
+        /// <param name="franchiseEditMoviesDto">the dto object data with the franchise id you want the updated movies to have</param>
+        /// <returns></returns>
+
+        [HttpPatch("{id}/movies")]
+        public async Task<ActionResult> PatchFranchiseMovies(int id, FranchiseEditMovieDto franchiseEditMovieDto)
+        {
+            var franchise = await _franchiseService.GetFranchiseById(id);
+
+            if (franchise == null)
+            {
+                return NotFound();
+            }
+
+            try
+            {
+                // Get all the movies with ids in the list
+                var moviesToUpdate = await _movieService.GetMoviesByIds(franchiseEditMovieDto.MovieIds);
+
+                // Update the FranchiseId of each movie to match the updated Franchise
+                foreach (var movie in moviesToUpdate)
+                {
+                    movie.FranchiseId = franchise.Id;
+                    await _movieService.PatchMovie(movie);
+                }
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+
+            return NoContent();
+        }
+
+
+
+
+
         ///// <summary>
         ///// Update franchise with given id to have the new data from the franchiseEditDto object
         ///// </summary>
@@ -131,7 +176,7 @@ namespace CSharp_Assignment_3_MovieApi.Controllers
 
         //    // generate array of movie id's, input franchise id's into each movie's franchise id [ 1, 2, 3 ,4 ] 
 
-            
+
         //    var franchise = await _franchiseService.GetFranchiseById(id);
 
         //    if (franchise == null)

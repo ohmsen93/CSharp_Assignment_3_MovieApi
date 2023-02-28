@@ -6,6 +6,8 @@ namespace CSharp_Assignment_3_MovieApi.Services
     {
         Task<IEnumerable<Movie>> GetAllMovies();
         Task<Movie> GetMovieById(int id);
+
+        Task<IEnumerable<Movie>> GetMoviesByIds(List<int> ids);
         Task<Movie> PostMovie(Movie movie);
         Task<Movie> PatchMovie(Movie movie);
 

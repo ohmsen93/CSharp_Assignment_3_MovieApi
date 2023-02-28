@@ -66,20 +66,30 @@ namespace CSharp_Assignment_3_MovieApi.Services
             return updatedFranchise;
         }
 
-        public async Task<Franchise> PatchFranchiseMovies(Franchise franchise)
+        public async Task<Franchise> PatchFranchiseMovies(int franchiseId, IEnumerable<int> movieIds)
         {
-            //find Franchise entity
-            var updatedFranchise = await _dbContext.Franchises.FindAsync(franchise.Id);
-            if (updatedFranchise == null)
+            var franchise = await _dbContext.Franchises.FindAsync(franchiseId);
+
+            if (franchise == null)
             {
-                throw new Exception($"Franchise with Id: {franchise.Id} not found.");
+                throw new Exception($"Franchise with Id: {franchiseId} not found.");
             }
 
-            //patch franchise entity
+            // Get all the movies with ids in the list
+            var moviesToUpdate = await _dbContext.Movies.Where(m => movieIds.Contains(m.Id)).ToListAsync();
 
-            updatedFranchise.Movies = franchise.Movies;
+            // Update the FranchiseId of each movie to match the updated Franchise
+            foreach (var movie in moviesToUpdate)
+            {
+                movie.FranchiseId = franchise.Id;
+            }
+
+            // Save the changes to the database
             await _dbContext.SaveChangesAsync();
-            return updatedFranchise;
+
+            return franchise;
         }
+
+
     }
 }

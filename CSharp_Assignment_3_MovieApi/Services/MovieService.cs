@@ -30,7 +30,16 @@ namespace CSharp_Assignment_3_MovieApi.Services
 
             return movie;
         }
-        
+
+        public async Task<IEnumerable<Movie>> GetMoviesByIds(List<int> ids)
+        {
+            return await _dbContext.Movies
+                .Include(x => x.Characters)
+                .Include(x => x.Franchise)
+                .Where(x => ids.Contains(x.Id))
+                .ToListAsync();
+        }
+
         public async Task<Movie> PostMovie(Movie movie)
         {
             await _dbContext.Movies.AddAsync(movie);
