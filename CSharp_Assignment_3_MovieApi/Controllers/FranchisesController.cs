@@ -119,5 +119,46 @@ namespace CSharp_Assignment_3_MovieApi.Controllers
 
             return Ok(updatedFranchiseDto);
         }
+
+        /// <summary>
+        /// Update franchise with given id to have the new data from the franchiseEditDto object
+        /// </summary>
+        /// <param name="id">the Id for the franchise you want updated</param>
+        /// <param name="franchiseEditDto">the dto object data you want the updated franchise to have</param>
+        /// <returns></returns>
+        [HttpPatch("{id}")]
+        public async Task<ActionResult<FranchiseDto>> PatchFranchiseMovies(int id, FranchiseEditDto franchiseEditDto)
+        {
+
+            // generate array of movie id's, input franchise id's into each movie's franchise id [ 1, 2, 3 ,4 ] 
+
+
+
+
+
+
+
+
+            //var franchise = await _franchiseService.GetFranchiseById(id);
+
+            //if (franchise == null)
+            //{
+            //    return NotFound();
+            //}
+            //_mapper.Map(franchiseEditDto, franchise);
+            //try
+            //{
+            //    franchise = await _franchiseService.PatchFranchise(franchise);
+            //}
+            //catch (Exception ex)
+            //{
+            //    return BadRequest(ex.Message);
+            //}
+
+            //var updatedFranchiseDto = _mapper.Map<FranchiseDto>(franchise);
+
+            //return Ok(updatedFranchiseDto);
+        }
+
     }
 }

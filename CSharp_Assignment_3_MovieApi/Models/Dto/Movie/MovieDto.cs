@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
 
-namespace CSharp_Assignment_3_MovieApi.Models.Dto.Movie
+namespace CSharp_Assignment_3_MovieApi.Models
 {
     public class MovieDto
     {

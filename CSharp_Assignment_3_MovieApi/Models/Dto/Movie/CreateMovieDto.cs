@@ -1,5 +1,5 @@
-﻿namespace CSharp_Assignment_3_MovieApi.Models.Dto.Movie
-{
+﻿namespace CSharp_Assignment_3_MovieApi.Models 
+{ 
     public class CreateMovieDto
     {
         public string Title { get; set; }
