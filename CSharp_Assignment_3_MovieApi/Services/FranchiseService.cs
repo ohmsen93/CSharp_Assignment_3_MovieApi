@@ -13,7 +13,7 @@ namespace CSharp_Assignment_3_MovieApi.Services
             _dbContext = dbContext;
         }
 
-        
+
 
         public async Task<IEnumerable<Franchise>> GetAllFranchises()
         {
@@ -22,13 +22,20 @@ namespace CSharp_Assignment_3_MovieApi.Services
 
         public async Task<Franchise> GetFranchiseById(int id)
         {
-            
-                var franchise = await _dbContext.Franchises.Include(x => x.Movies).FirstOrDefaultAsync(x => x.Id == id);
-            
-                return franchise;
-            
-                
-            
+
+            var franchise = await _dbContext.Franchises.Include(x => x.Movies).FirstOrDefaultAsync(x => x.Id == id);
+
+            return franchise;
+
+
+
+        }
+        public async Task<Franchise> GetAllIdFranchiseCharacters(int id)
+        {
+            var franchise = await _dbContext.Franchises.Include(x => x.Movies)
+            .ThenInclude(m => m.Characters)
+            .FirstOrDefaultAsync(x => x.Id == id);
+            return franchise;
         }
 
         public async Task<Franchise> PostFranchise(Franchise franchise)

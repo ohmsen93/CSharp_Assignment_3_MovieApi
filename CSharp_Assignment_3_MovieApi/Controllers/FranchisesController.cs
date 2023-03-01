@@ -44,6 +44,7 @@ namespace CSharp_Assignment_3_MovieApi.Controllers
             var franchiseDto = _mapper.Map<IEnumerable<FranchiseDto>>(franchises);
             return Ok(franchiseDto);
         }
+
         /// <summary>
         /// GET: Franchise by Id
         /// </summary>
@@ -61,6 +62,40 @@ namespace CSharp_Assignment_3_MovieApi.Controllers
             return Ok(franchiseDto);
         }
 
+        /// <summary>
+        /// GET: Id Franchise Movie Characters
+        /// </summary>
+        /// <param name="id">id for the Franchise you want</param>
+        /// <returns>The requested franchise</returns>
+        [HttpGet("{id}/characters")]
+        public async Task<ActionResult<IEnumerable<CharacterDto>>> GetAllIdFranchiseCharacters(int id)
+        {
+            var franchise = await _franchiseService.GetFranchiseById(id);
+
+            if (franchise == null)
+            {
+                return NotFound();
+            }
+            var characters = franchise.Movies
+            .Where(m => m.Characters != null)
+            .SelectMany(m => m.Characters)
+            .Select(_mapper.Map<CharacterDto>);
+
+            var characterDtos = _mapper.Map<IEnumerable<CharacterDto>>(characters);
+
+            return Ok(characterDtos);
+        }
+        //[HttpGet("{id}/characters")]
+        //public async Task<ActionResult<IEnumerable<CharacterDto>>> GetAllIdFranchiseCharacters(int id)
+        //{
+        //    var characters = await _franchiseService.GetAllIdFranchiseCharacters(id);
+        //    if (characters == null)
+        //    {
+        //        return NotFound();
+        //    }
+        //    var characterDtos = _mapper.Map<IEnumerable<CharacterDto>>(characters);
+        //    return Ok(characterDtos);
+        //}
         /// <summary>
         /// creates a new Franchise resource
         /// </summary>
@@ -144,7 +179,7 @@ namespace CSharp_Assignment_3_MovieApi.Controllers
             {
                 // Get all the movies with ids in the list
                 var moviesToUpdate = await _movieService.GetMoviesByIds(franchiseEditMovieDto.MovieIds);
-                
+
 
                 // Update the FranchiseId of each movie to match the updated Franchise
                 foreach (var movie in moviesToUpdate)
