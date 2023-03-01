@@ -31,6 +31,14 @@ namespace CSharp_Assignment_3_MovieApi.Services
             
         }
 
+        public async Task<List<Character>> GetCharactersByIds(List<int> ids)
+        {
+            return await _dbContext.Characters
+                .Include(x => x.Movies)
+                .Where(x => ids.Contains(x.Id))
+                .ToListAsync();
+        }
+
         public async Task<Character> PostCharacter(Character Character)
         {
             await _dbContext.Characters.AddAsync(Character);

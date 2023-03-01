@@ -2,6 +2,6 @@
 {
     public class MovieEditCharacterDto
     {
-        public ICollection<int> CharacterIds { get; set; }
+        public List<int> CharacterIds { get; set; }
     }
 }

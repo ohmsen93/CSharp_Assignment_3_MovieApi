@@ -6,6 +6,8 @@ namespace CSharp_Assignment_3_MovieApi.Services
     {
         Task<IEnumerable<Character>> GetAllCharacters();
         Task<Character> GetCharacterById(int id);
+
+        Task<List<Character>> GetCharactersByIds(List<int> ids);
         Task<Character> PostCharacter(Character Character);
         Task<Character> PatchCharacter(Character Character);
 
