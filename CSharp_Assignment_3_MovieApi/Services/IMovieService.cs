@@ -11,6 +11,7 @@ namespace CSharp_Assignment_3_MovieApi.Services
         Task<Movie> PostMovie(Movie movie);
         Task<Movie> PatchMovie(Movie movie);
 
+        Task<Movie> PatchMovieCharacters(int id, List<int> characterIds);
         Task<Movie> DeleteMovie(int id);
     }
 }
