@@ -24,13 +24,13 @@ namespace CSharp_Assignment_3_MovieApi.Controllers
         private readonly IFranchiseService _franchiseService;
         private readonly IMovieService _movieService;
         private readonly IMapper _mapper;
-
-        public FranchisesController(IFranchiseService service, IMovieService movieService, IMapper mapper)
+        private readonly MovieDbContext _dbContext;
+        public FranchisesController(MovieDbContext dbContext, IFranchiseService service, IMovieService movieService, IMapper mapper)
         {
             _franchiseService = service;
             _movieService = movieService;
             _mapper = mapper;
-
+            _dbContext = dbContext;
         }
 
         /// <summary>
@@ -76,26 +76,43 @@ namespace CSharp_Assignment_3_MovieApi.Controllers
             {
                 return NotFound();
             }
-            var characters = franchise.Movies
-            .Where(m => m.Characters != null)
-            .SelectMany(m => m.Characters)
-            .Select(_mapper.Map<CharacterDto>);
 
-            var characterDtos = _mapper.Map<IEnumerable<CharacterDto>>(characters);
+            var characters = Movie
+                .Include(m => m.Characters)
+                .Where(m => m.FranchiseId == id)
+                .SelectMany(m => m.Characters)
+                .Select(c => new CharacterDto
+                {
+                    Id = c.Id,
+                    FirstName = c.FirstName,
+                    LastName = c.LastName,
+                    Alias = c.Alias,
+                    Gender = c.Gender,
+                    Picture = c.Picture,
+                    Movies = c.Movies.Select(m => m.Title).ToList()
+                });
 
-            return Ok(characterDtos);
+            return Ok(characters);
         }
         //[HttpGet("{id}/characters")]
         //public async Task<ActionResult<IEnumerable<CharacterDto>>> GetAllIdFranchiseCharacters(int id)
         //{
-        //    var characters = await _franchiseService.GetAllIdFranchiseCharacters(id);
-        //    if (characters == null)
+        //    var franchise = await _franchiseService.GetFranchiseById(id);
+
+        //    if (franchise == null)
         //    {
         //        return NotFound();
         //    }
+        //    var characters = franchise.Movies
+        //    .Where(m => m.Characters != null)
+        //    .SelectMany(m => m.Characters)
+        //    .Select(_mapper.Map<CharacterDto>);
+
         //    var characterDtos = _mapper.Map<IEnumerable<CharacterDto>>(characters);
+
         //    return Ok(characterDtos);
         //}
+
         /// <summary>
         /// creates a new Franchise resource
         /// </summary>
