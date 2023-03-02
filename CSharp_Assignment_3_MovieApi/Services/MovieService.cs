@@ -13,6 +13,9 @@ namespace CSharp_Assignment_3_MovieApi.Services
             _dbContext = dbContext;
         }
 
+        /// <summary>
+        /// Gets all movies with associated characters and franchise.
+        /// </summary>
         public async Task<IEnumerable<Movie>> GetAllMovies()
         {
             return await _dbContext.Movies
@@ -21,6 +24,10 @@ namespace CSharp_Assignment_3_MovieApi.Services
                 .ToListAsync();
         }
 
+        /// <summary>
+        /// Gets a movie by id with associated characters and franchise.
+        /// </summary>
+        /// <param name="id">The id of the movie to retrieve.</param>
         public async Task<Movie> GetMovieById(int id)
         {
             var movie = await _dbContext.Movies
@@ -31,6 +38,10 @@ namespace CSharp_Assignment_3_MovieApi.Services
             return movie;
         }
 
+        /// <summary>
+        /// Gets multiple movies by id with associated characters and franchise.
+        /// </summary>
+        /// <param name="ids">The ids of the movies to retrieve.</param>
         public async Task<IEnumerable<Movie>> GetMoviesByIds(List<int> ids)
         {
             return await _dbContext.Movies
@@ -40,12 +51,21 @@ namespace CSharp_Assignment_3_MovieApi.Services
                 .ToListAsync();
         }
 
+        /// <summary>
+        /// Creates a new movie.
+        /// </summary>
+        /// <param name="movie">The movie object to create.</param>
         public async Task<Movie> PostMovie(Movie movie)
         {
             await _dbContext.Movies.AddAsync(movie);
             await _dbContext.SaveChangesAsync();
             return movie;
         }
+
+        /// <summary>
+        /// Updates a movie by id.
+        /// </summary>
+        /// <param name="movie">The updated movie object.</param>
         public async Task<Movie> PatchMovie(Movie movie)
         {
             //find Movie entity
@@ -68,7 +88,11 @@ namespace CSharp_Assignment_3_MovieApi.Services
             return updatedMovie;
         }
 
-
+        /// <summary>
+        /// Updates the characters associated with a movie.
+        /// </summary>
+        /// <param name="id">The id of the movie to update.</param>
+        /// <param name="characterIds">The ids of the characters to associate with the movie.</param>
         public async Task<Movie> PatchMovieCharacters(int id, List<int> characterIds)
         {
             var movie = await _dbContext.Movies
@@ -89,9 +113,10 @@ namespace CSharp_Assignment_3_MovieApi.Services
             return movie;
         }
 
-
-
-
+        /// <summary>
+        /// Deletes a movie by id.
+        /// </summary>
+        /// <param name="id">The id of the movie to delete.</param>
         public async Task<Movie> DeleteMovie(int id)
         {
             var movie = await _dbContext.Movies.FindAsync(id);

@@ -25,8 +25,6 @@ namespace CSharp_Assignment_3_MovieApi.DatabaseContext
             optionsBuilder.UseSqlServer(_config.GetConnectionString("DefaultConnection"));
         }
 
-
-        //
         //Database Relationships & initialization
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

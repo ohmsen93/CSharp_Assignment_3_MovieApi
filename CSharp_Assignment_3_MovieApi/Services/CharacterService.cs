@@ -13,13 +13,20 @@ namespace CSharp_Assignment_3_MovieApi.Services
             _dbContext = dbContext;
         }
 
-        
 
+        /// <summary>
+        /// Get all characters with associated movies.
+        /// </summary>
         public async Task<IEnumerable<Character>> GetAllCharacters()
         {
             return await _dbContext.Characters.Include(x => x.Movies).ToListAsync();
         }
 
+        /// <summary>
+        /// Get a character by Id with associated movies.
+        /// </summary>
+        /// <param name="id">The Id of the character to retrieve.</param>
+        /// <returns>The retrieved character.</returns>
         public async Task<Character> GetCharacterById(int id)
         {
             
@@ -31,6 +38,11 @@ namespace CSharp_Assignment_3_MovieApi.Services
             
         }
 
+        /// <summary>
+        /// Get characters by a list of Ids with associated movies.
+        /// </summary>
+        /// <param name="ids">The list of character Ids to retrieve.</param>
+        /// <returns>The retrieved characters.</returns>
         public async Task<List<Character>> GetCharactersByIds(List<int> ids)
         {
             return await _dbContext.Characters
@@ -39,6 +51,11 @@ namespace CSharp_Assignment_3_MovieApi.Services
                 .ToListAsync();
         }
 
+        /// <summary>
+        /// Add a new character to the database.
+        /// </summary>
+        /// <param name="character">The character to add.</param>
+        /// <returns>The added character.</returns>
         public async Task<Character> PostCharacter(Character Character)
         {
             await _dbContext.Characters.AddAsync(Character);
@@ -46,6 +63,11 @@ namespace CSharp_Assignment_3_MovieApi.Services
             return Character;
         }
 
+        /// <summary>
+        /// Delete a character by Id from the database.
+        /// </summary>
+        /// <param name="id">The Id of the character to delete.</param>
+        /// <returns>The deleted character.</returns>
         public async Task<Character> DeleteCharacter(int id)
         {
             var Character = await _dbContext.Characters.FindAsync(id);
@@ -59,6 +81,11 @@ namespace CSharp_Assignment_3_MovieApi.Services
             return Character;
         }
 
+        /// <summary>
+        /// Update an existing character by Id in the database.
+        /// </summary>
+        /// <param name="character">The updated character.</param>
+        /// <returns>The updated character.</returns>
         public async Task<Character> PatchCharacter(Character Character)
         {
             //find Character entity

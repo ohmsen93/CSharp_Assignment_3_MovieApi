@@ -13,11 +13,19 @@ namespace CSharp_Assignment_3_MovieApi.Services
             _dbContext = dbContext;
         }
 
+        /// <summary>
+        /// Get all franchises with their associated movies.
+        /// </summary>
         public async Task<IEnumerable<Franchise>> GetAllFranchises()
         {
             return await _dbContext.Franchises.Include(x => x.Movies).ToListAsync();
         }
 
+        /// <summary>
+        /// Get a franchise by its ID with associated movies.
+        /// </summary>
+        /// <param name="id">The ID of the franchise to get.</param>
+        /// <returns>The franchise with the specified ID.</returns>
         public async Task<Franchise> GetFranchiseById(int id)
         {
 
@@ -27,6 +35,11 @@ namespace CSharp_Assignment_3_MovieApi.Services
 
         }
 
+        /// <summary>
+        /// Get a franchise by its ID with associated movies and characters.
+        /// </summary>
+        /// <param name="id">The ID of the franchise to get.</param>
+        /// <returns>The franchise with the specified ID.</returns>
         public async Task<Franchise> GetAllIdFranchiseCharacters(int id)
         {
             var franchise = await _dbContext.Franchises.Include(x => x.Movies)
@@ -35,12 +48,23 @@ namespace CSharp_Assignment_3_MovieApi.Services
             return franchise;
         }
 
+        /// <summary>
+        /// Add a new franchise to the database.
+        /// </summary>
+        /// <param name="franchise">The franchise to add.</param>
+        /// <returns>The added franchise.</returns>
         public async Task<Franchise> PostFranchise(Franchise franchise)
         {
             await _dbContext.Franchises.AddAsync(franchise);
             await _dbContext.SaveChangesAsync();
             return franchise;
         }
+
+        /// <summary>
+        /// Delete a franchise from the database by its ID.
+        /// </summary>
+        /// <param name="id">The ID of the franchise to delete.</param>
+        /// <returns>The deleted franchise.</returns>
         public async Task<Franchise> DeleteFranchise(int id)
         {
             var franchise = await _dbContext.Franchises.FindAsync(id);
@@ -54,22 +78,31 @@ namespace CSharp_Assignment_3_MovieApi.Services
             return franchise;
         }
 
+        /// <summary>
+        /// Update an existing franchise by its ID in the database.
+        /// </summary>
+        /// <param name="franchise">The franchise with updated information.</param>
+        /// <returns>The updated franchise.</returns>
         public async Task<Franchise> PatchFranchise(Franchise franchise)
         {
-            //find Franchise entity
             var updatedFranchise = await _dbContext.Franchises.FindAsync(franchise.Id);
             if (updatedFranchise == null)
             {
                 throw new Exception($"Franchise with Id: {franchise.Id} not found.");
             }
 
-            //patch franchise entity
             updatedFranchise.Name = franchise.Name;
             updatedFranchise.Description = franchise.Description;
             await _dbContext.SaveChangesAsync();
             return updatedFranchise;
         }
 
+        /// <summary>
+        /// Update the movies associated with a franchise.
+        /// </summary>
+        /// <param name="franchiseId">The ID of the franchise to update.</param>
+        /// <param name="movieIds">The IDs of the movies to associate with the franchise.</param>
+        /// <returns>The updated franchise.</returns>
         public async Task<Franchise> PatchFranchiseMovies(int franchiseId, IEnumerable<int> movieIds)
         {
             var franchise = await _dbContext.Franchises.FindAsync(franchiseId);
@@ -79,16 +112,13 @@ namespace CSharp_Assignment_3_MovieApi.Services
                 throw new Exception($"Franchise with Id: {franchiseId} not found.");
             }
 
-            // Get all the movies with ids in the list
             var moviesToUpdate = await _dbContext.Movies.Where(m => movieIds.Contains(m.Id)).ToListAsync();
 
-            // Update the FranchiseId of each movie to match the updated Franchise
             foreach (var movie in moviesToUpdate)
             {
                 movie.FranchiseId = franchise.Id;
             }
 
-            // Save the changes to the database
             await _dbContext.SaveChangesAsync();
 
             return franchise;

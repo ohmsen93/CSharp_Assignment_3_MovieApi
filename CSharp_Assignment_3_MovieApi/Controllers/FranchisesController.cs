@@ -179,7 +179,6 @@ namespace CSharp_Assignment_3_MovieApi.Controllers
                 // Get all the movies with ids in the list
                 var moviesToUpdate = await _movieService.GetMoviesByIds(franchiseEditMovieDto.MovieIds);
 
-
                 // Update the FranchiseId of each movie to match the updated Franchise
                 foreach (var movie in moviesToUpdate)
                 {
