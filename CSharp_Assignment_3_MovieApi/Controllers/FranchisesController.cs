@@ -77,7 +77,7 @@ namespace CSharp_Assignment_3_MovieApi.Controllers
                 return NotFound();
             }
 
-            var characters = Movie
+            var characters = _dbContext.Movies
                 .Include(m => m.Characters)
                 .Where(m => m.FranchiseId == id)
                 .SelectMany(m => m.Characters)
