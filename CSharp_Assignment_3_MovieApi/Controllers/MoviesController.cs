@@ -11,6 +11,7 @@ using System.Reflection;
 using System.Net.Mime;
 using CSharp_Assignment_3_MovieApi.Services;
 using AutoMapper;
+using NuGet.Packaging;
 
 namespace CSharp_Assignment_3_MovieApi.Controllers
 {
@@ -21,14 +22,14 @@ namespace CSharp_Assignment_3_MovieApi.Controllers
     [ApiController]
     public class MoviesController : ControllerBase
     {
-        private readonly MovieDbContext _context;
+        private readonly MovieDbContext _dbContext;
         private readonly IMovieService _movieService;
         private readonly ICharacterService _characterService;
         private readonly IMapper _mapper;
 
         public MoviesController(MovieDbContext context, IMovieService service, ICharacterService characterService, IMapper mapper)
         {
-            _context = context;
+            _dbContext = context;
             _movieService = service;
             _characterService = characterService;
             _mapper = mapper;
@@ -131,6 +132,7 @@ namespace CSharp_Assignment_3_MovieApi.Controllers
         [HttpPatch("{id}/characters")]
         public async Task<ActionResult> PatchMovieCharacters(int id, MovieEditCharacterDto movieEditCharacterDto)
         {
+            // check if the movie exists
             var movie = await _movieService.GetMovieById(id);
 
             if (movie == null)
@@ -140,41 +142,19 @@ namespace CSharp_Assignment_3_MovieApi.Controllers
 
             try
             {
-                // Get all the characters with ids in the list
-                var MovieCharactersToUpdate = await _characterService.GetCharactersByIds(movieEditCharacterDto.CharacterIds);
-
-
-                foreach (var character in MovieCharactersToUpdate)
-                {
-                    // Check if the record already exists in the join table
-                    var existingRecord = _context.ChangeTracker.Entries<Dictionary<string, object>>()
-                        .FirstOrDefault(x => x.Entity.TryGetValue("Id", out var movieObj)
-                            && x.Entity.TryGetValue("Id", out var characterObj)
-                            && movieObj == movie && characterObj == character);
-
-                    if (existingRecord != null)
-                    {
-                        // The record already exists, so we don't need to do anything
-                        continue;
-                    }
-
-                    // Add the new record to the join table
-                    _context.Add(new Dictionary<string, object>
-                    {
-                        { "MovieId", movie.Id },
-                        { "CharacterId", character.Id }
-                    });
-                }
-
-                // Save the changes
-                _context.SaveChanges();
+                movie = await _movieService.PatchMovieCharacters(id, movieEditCharacterDto.CharacterIds);
             }
             catch (Exception ex)
             {
                 return BadRequest(ex.Message);
+
             }
 
-            return NoContent();
+            var updatedMovieCharacterDto = _mapper.Map<MovieEditCharacterDto>(movie);
+
+            return Ok(updatedMovieCharacterDto);
         }
+
+
     }
 }
