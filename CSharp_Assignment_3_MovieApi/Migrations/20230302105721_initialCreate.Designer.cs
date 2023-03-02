@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CSharp_Assignment_3_MovieApi.Migrations
 {
     [DbContext(typeof(MovieDbContext))]
-    [Migration("20230302094344_initialCreate")]
+    [Migration("20230302105721_initialCreate")]
     partial class initialCreate
     {
         /// <inheritdoc />
@@ -266,13 +266,13 @@ namespace CSharp_Assignment_3_MovieApi.Migrations
 
             modelBuilder.Entity("Movie_Character", b =>
                 {
-                    b.HasOne("CSharp_Assignment_3_MovieApi.Models.Movie", null)
+                    b.HasOne("CSharp_Assignment_3_MovieApi.Models.Character", null)
                         .WithMany()
                         .HasForeignKey("CharacterId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("CSharp_Assignment_3_MovieApi.Models.Character", null)
+                    b.HasOne("CSharp_Assignment_3_MovieApi.Models.Movie", null)
                         .WithMany()
                         .HasForeignKey("MovieId")
                         .OnDelete(DeleteBehavior.Cascade)

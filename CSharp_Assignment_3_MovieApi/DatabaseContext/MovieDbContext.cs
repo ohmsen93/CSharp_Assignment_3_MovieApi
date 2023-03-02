@@ -42,8 +42,8 @@ namespace CSharp_Assignment_3_MovieApi.DatabaseContext
                 .WithMany(c => c.Movies)
                 .UsingEntity<Dictionary<string, object>>(
                     "Movie_Character",
-                    r => r.HasOne<Character>().WithMany().HasForeignKey("MovieId"),
-                    l => l.HasOne<Movie>().WithMany().HasForeignKey("CharacterId"),
+                    r => r.HasOne<Character>().WithMany().HasForeignKey("CharacterId"),
+                    l => l.HasOne<Movie>().WithMany().HasForeignKey("MovieId"),
                     je =>
                     {
                         je.HasKey("MovieId", "CharacterId");

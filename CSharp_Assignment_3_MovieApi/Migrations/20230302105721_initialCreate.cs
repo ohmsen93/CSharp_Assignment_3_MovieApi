@@ -80,14 +80,14 @@ namespace CSharp_Assignment_3_MovieApi.Migrations
                 {
                     table.PrimaryKey("PK_Movie_Character", x => new { x.MovieId, x.CharacterId });
                     table.ForeignKey(
-                        name: "FK_Movie_Character_Characters_MovieId",
-                        column: x => x.MovieId,
+                        name: "FK_Movie_Character_Characters_CharacterId",
+                        column: x => x.CharacterId,
                         principalTable: "Characters",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Movie_Character_Movies_CharacterId",
-                        column: x => x.CharacterId,
+                        name: "FK_Movie_Character_Movies_MovieId",
+                        column: x => x.MovieId,
                         principalTable: "Movies",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
