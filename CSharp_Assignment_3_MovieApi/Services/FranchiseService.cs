@@ -13,8 +13,6 @@ namespace CSharp_Assignment_3_MovieApi.Services
             _dbContext = dbContext;
         }
 
-
-
         public async Task<IEnumerable<Franchise>> GetAllFranchises()
         {
             return await _dbContext.Franchises.Include(x => x.Movies).ToListAsync();
@@ -27,9 +25,8 @@ namespace CSharp_Assignment_3_MovieApi.Services
 
             return franchise;
 
-
-
         }
+
         public async Task<Franchise> GetAllIdFranchiseCharacters(int id)
         {
             var franchise = await _dbContext.Franchises.Include(x => x.Movies)
