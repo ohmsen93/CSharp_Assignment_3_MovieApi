@@ -67,6 +67,31 @@ namespace CSharp_Assignment_3_MovieApi.Services
             await _dbContext.SaveChangesAsync();
             return updatedMovie;
         }
+
+
+        public async Task<Movie> PatchMovieCharacters(int id, List<int> characterIds)
+        {
+            var movie = await _dbContext.Movies
+                .Include(m => m.Characters)
+                .Where(m => m.Id == id)
+                .FirstOrDefaultAsync();
+
+            var characters = new List<Character>();
+
+            foreach (var characterId in characterIds)
+            {
+                Character charObj = await _dbContext.Characters.FindAsync(characterId);
+                characters.Add(charObj);
+            }
+            movie.Characters = characters;
+            await _dbContext.SaveChangesAsync();
+
+            return movie;
+        }
+
+
+
+
         public async Task<Movie> DeleteMovie(int id)
         {
             var movie = await _dbContext.Movies.FindAsync(id);
