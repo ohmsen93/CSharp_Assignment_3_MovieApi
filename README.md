@@ -4,11 +4,14 @@ MovieAPI is a RESTful service made as a .NET Backend Assignment. The aim is to u
 # Description
 Using the Code first principle, the ASP.Net Core Web API creates a database called movieDbDTO with three tables: Characters, Movies, and Franchises, as well as a linking table between Movie and Character because of their many-to-many relationship. The database can then be manipulated using the REST Controllers CRUD calls.
 
-Using Code first principle, the ASP.Net Core Web API creates a database called movieDbDTO which consist of 3 tables: Characters, Movies & Franchises as well as a linking table between Movie and Character because of their many to many relation. This Database can then be manipulated using the REST Controllers CRUD calls. 
-
 <img width="584" alt="CRUD VideoDB" src="https://user-images.githubusercontent.com/44801529/222445611-61931dcf-a28b-4eb8-b5dd-0b5a26400e52.png">
 
-# setting 
+# IMPORTANT! Setup before running application
+1. To try out the application locally use a database management system such as SQL server Express and Microsoft SQL Server Management Studio.
+2. in the ASP.Net Core Web APIs appsettings.json change the Data source to your sql servers name.
+
+![SQLServerChangeName](https://user-images.githubusercontent.com/44801529/222695975-fb5695e0-1cee-46ee-b49b-37db2da161f1.png)
+
 # Controllers
 The MovieAPI has three controllers: Movie, Character, and Franchise.
 ## Movie Controller
