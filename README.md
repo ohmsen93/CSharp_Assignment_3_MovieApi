@@ -7,10 +7,24 @@ Using the Code first principle, the ASP.Net Core Web API creates a database call
 <img width="584" alt="CRUD VideoDB" src="https://user-images.githubusercontent.com/44801529/222445611-61931dcf-a28b-4eb8-b5dd-0b5a26400e52.png">
 
 # IMPORTANT! Setup before running application
+## When running the Application from visual studio
 1. To try out the application locally use a database management system such as SQL server Express and Microsoft SQL Server Management Studio.
 2. in the ASP.Net Core Web APIs appsettings.json change the Data source to your sql servers name.
 
 ![SQLServerChangeName](https://user-images.githubusercontent.com/44801529/222695975-fb5695e0-1cee-46ee-b49b-37db2da161f1.png)
+
+
+## When running the Application via docker
+1. Ensure docker is installed and is working.
+2. Open a terminal, and navigate to the DIR with the docker-compose.yml.
+3. Run the command (docker-compose up -d --force-recreate).
+
+![image](https://user-images.githubusercontent.com/6428939/222731999-464c515f-fa67-4242-bc47-0f3c77b6892d.png)
+
+### Docker SQLServer Authentication
+User: SA
+Password: A&VeryComplex123Password
+Server: (When running it on a local system)(localhost,1433)
 
 # Controllers
 The MovieAPI has three controllers: Movie, Character, and Franchise.
