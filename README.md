@@ -23,7 +23,9 @@ Using the Code first principle, the ASP.Net Core Web API creates a database call
 
 ### Docker SQLServer Authentication
 User: SA
+\
 Password: A&VeryComplex123Password
+\
 Server: (When running it on a local system)(localhost,1433)
 
 # Controllers
