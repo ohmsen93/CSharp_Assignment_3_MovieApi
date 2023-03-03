@@ -1,0 +1,25 @@
+version: "3.9"
+services:
+  web_api:
+    image: csharpassignment3movieapi
+    container_name: csharpassignment3movieapi_application
+    ports:
+      - "5000:80"
+    networks:
+      - my_network
+  sql:
+    image: "mcr.microsoft.com/mssql/server:2022-latest"
+    container_name: sql_server2022
+    ports:
+      - "1433:1433"
+    environment:
+      - ACCEPT_EULA=Y
+      - SA_PASSWORD=A&VeryComplex123Password
+      - MSSQL_PID=Developer
+      - MSSQL_TCP_PORT=1433
+      - MSSQL_TCP_LISTEN_PORT=1433
+      - MSSQL_IP_ADDRESS=0.0.0.0
+    networks:
+      - my_network
+networks:
+  my_network:

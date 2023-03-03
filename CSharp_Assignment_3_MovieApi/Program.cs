@@ -1,12 +1,20 @@
-using CSharp_Assignment_3_MovieApi.DatabaseContext;
 using CSharp_Assignment_3_MovieApi.Services;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 using System.Linq.Expressions;
 using System.Reflection;
+using CSharp_Assignment_3_MovieApi.DatabaseContext;
+using System;
 
-var builder = WebApplication.CreateBuilder(args);
+namespace CSharp_Assignment_3_MovieApi
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+
+            var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddTransient<ICharacterService, CharacterService>();
@@ -75,3 +83,6 @@ app.MapControllers();
 app.Run();
 
 
+        }
+    }
+}
