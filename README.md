@@ -11,9 +11,10 @@ Using Code first principle, the ASP.Net Core Web API creates a database called m
 # setting 
 # Controllers
 The MovieAPI has three controllers: Movie, Character, and Franchise.
-## Movie
-The Movie controller has the following methods:
+## Movie Controller
+The MovieController handles HTTP requests related to movies, including getting all movies, getting a single movie by ID, creating a new movie, updating an existing movie, and deleting a movie.
 
+### Endpoints
 - GetAllMovies: This method returns a list of all movies in the database. It doesn't require any parameters and will simply return all movies as a collection.
 
 - GetMovieById: This method returns a specific movie resource based on its ID. It takes an ID parameter as input and will return the movie resource that matches the ID provided.
@@ -25,11 +26,26 @@ The Movie controller has the following methods:
 - PatchMovie: This method updates a specific movie resource with new data. It takes an ID parameter and a MovieUpdateDto object as input. The MovieUpdateDto object contains the new data to be updated for the movie resource.
 
 - PatchMovieCharacters: This method updates the characters associated with a specific movie resource. It takes a MovieEditCharacterDto object as input, which contains a list of character IDs to be associated with the movie resource. This method updates the characters associated with the movie based on the movie ID provided in the MovieEditCharacterDto object.
-## Character
 
-## Franchise
-The Franchise controller has the following methods:
+## Character Controller
+The CharacterController handles HTTP requests related to characters, including getting all characters, getting a single character by ID, creating a new character, updating an existing character, and deleting a character.
 
+
+### Endpoints
+- GetAllCharacters(): This method returns a list of all characters in the database. It doesn't require any parameters and will simply return all characters as a collection.
+
+- GetCharacterById(int id): This method returns a specific character resource based on its ID. It takes an ID parameter as input and will return the character resource that matches the ID provided.
+
+- PostCharacter(CreateCharacterDto createCharacterDto): This method creates a new character resource. It takes a CreateCharacterDto object as input, which contains the necessary information to create a new character resource in the database.
+
+- DeleteCharacter(int id): This method deletes a specific character resource based on its ID. It takes an ID parameter as input and will delete the character resource that matches the ID provided.
+
+- PatchCharacter(int id, CharacterEditDto CharacterEditDto): This method updates a specific character resource with new data. It takes an ID parameter and a CharacterEditDto object as input. The CharacterEditDto object contains the new data to be updated for the character resource.
+
+## Franchise Controller
+The FranchiseController handles HTTP requests related to franchises, including getting all franchises, getting a single franchise by ID, creating a new franchise, updating an existing franchise, and deleting a franchise.
+
+### Endpoints
 - GetAllFranchises(): This method returns all the franchises that are stored in the database. The method retrieves the franchises from the database and returns them as a list of FranchiseDto objects. Each FranchiseDto object contains information about the franchise, such as the name, description, and ID.
 
 - GetFranchiseById(int id): This method retrieves a single franchise from the database by its ID. It takes an integer parameter (id) that represents the ID of the franchise to be retrieved. If a franchise with the given ID exists in the database, the method returns a FranchiseDto object containing the franchise's information. If no franchise with the given ID exists in the database, the method returns null.
